@@ -9,6 +9,10 @@ ${tables.join(";")};
 `,
   (err, result) => {
     if (!err) {
+      console.log(`
+      use latihan_livecoding;
+      ${relation.join(";")}`);
+
       dbConnection.query(
         `
       use latihan_livecoding;

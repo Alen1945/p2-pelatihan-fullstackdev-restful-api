@@ -12,8 +12,11 @@ app.use(bodyParser.json());
 
 //Router
 const ArtilceRouter = require("./src/routes/article");
+const CategoryRouter = require("./src/routes/category");
 
+//Routing
 app.use("/article", ArtilceRouter);
+app.use("/category", CategoryRouter);
 
 app.use((req, res, next) => {
   const error = new Error("Not Found");
