@@ -9,21 +9,21 @@ ${tables.join(";")};
 `,
   (err, result) => {
     if (!err) {
-      dbConnection.query(`
+      dbConnection.query(
+        `
       use latihan_livecoding;
-      ${relation.join(';')}`,(err,result)=>{
-          if(!err){
-              console.log('Migation Success')
-          }else{
+      ${relation.join(";")}`,
+        (err, result) => {
+          if (!err) {
+            console.log("Migation Success");
+          } else {
             console.log("Migration Failed");
             console.log(err);
           }
-      })
-    } else 
-      console.log("Migration Failed");
-      console.log(err);
-    }
+          dbConnection.end();
+        }
+      );
+    } else console.log("Migration Failed");
+    console.log(err);
   }
 );
-
-dbConnection.end();
