@@ -1,3 +1,4 @@
+const { indexOf } = require("mysql2/lib/constants/charset_encodings");
 const { runQuery } = require("../config/db");
 
 exports.CreateCategory = (name) => {
@@ -13,5 +14,64 @@ exports.CreateCategory = (name) => {
         return resolve(result);
       }
     );
+  });
+};
+
+exports.GetAllCategory = (params) => {
+  return new Promise((resolve, reject) => {
+    const { limit, page, sort, search } = params;
+    const condition = `
+    ${search ? `WHERE name LIKE '%${search}%'` : ""}
+    ${sort ? `ORDER BY ${sort.key} ${sort.value}` : ""}
+    LIMIT ${parseInt(limit)} OFFSET ${(parseInt(page) - 1) * parseInt(limit)}
+    `;
+
+    runQuery(
+      `
+    SELECT COUNT(*) AS total from category ${condition.substring(
+      0,
+      condition.indexOf("LIMIT")
+    )};
+    SELECT * FROM category ${condition}
+    `,
+      (err, result) => {
+        if (err) {
+          return reject(new Error(err));
+        }
+        return resolve(result);
+      }
+    );
+  });
+};
+
+exports.GetDetailCategory = (id) => {
+  return new Promise((resolve, reject) => {
+    runQuery(`SELECT * FROM category WHERE id=${id}`, (err, result) => {
+      if (err) {
+        return reject(new Error(err));
+      }
+      return resolve(result);
+    });
+  });
+};
+
+exports.UpdateCategory = (id, body) => {
+  return new Promise((resolve, reject) => {
+    runQuery(`SELECT * FROM category WHERE id=${id}`, (err, result) => {
+      if (err || !result[1][0]) {
+        return reject(new Error(`Category with id ${id} Not Exists`));
+      }
+      runQuery(
+        `UPDATE category SET ${Object.keys(body)
+          .map((v) => `${v}='${body[v]}'`)
+          .join(",")} Where id=${id}`,
+        (err, result) => {
+          if (err) {
+            return reject(new Error(err));
+          }
+          return resolve(result);
+        }
+      );
+    });
   });
 };
