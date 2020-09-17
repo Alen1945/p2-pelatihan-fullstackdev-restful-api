@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-
+const path = require("path");
 //Logger
 app.use(morgan("tiny"));
 
@@ -10,13 +10,17 @@ app.use(morgan("tiny"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 //Router
 const ArtilceRouter = require("./src/routes/article");
 const CategoryRouter = require("./src/routes/category");
-
+const AuthRouter = require("./src/routes/auth");
+const UserProfile = require("./src/routes/user");
 //Routing
 app.use("/article", ArtilceRouter);
 app.use("/category", CategoryRouter);
+app.use("/auth", AuthRouter);
+app.use("/profile", UserProfile);
 
 app.use((req, res, next) => {
   const error = new Error("Not Found");
@@ -36,3 +40,6 @@ const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server Running On Port ${PORT}`);
 });
+
+//ENVIRONMENT Variable
+//CORS

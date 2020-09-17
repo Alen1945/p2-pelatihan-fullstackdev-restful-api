@@ -75,3 +75,19 @@ exports.UpdateCategory = (id, body) => {
     });
   });
 };
+
+exports.DeleteCategory = (id) => {
+  return new Promise((resolve, reject) => {
+    runQuery(`SELECT * FROM category WHERE id=${id}`, (err, result) => {
+      if (err || !result[1][0]) {
+        return reject(new Error(`Category with id ${id} Not Exists`));
+      }
+      runQuery(`DELETE FROM category WHERE id=${id}`, (err, result) => {
+        if (err) {
+          return reject(new Error(err));
+        }
+        return resolve(result);
+      });
+    });
+  });
+};

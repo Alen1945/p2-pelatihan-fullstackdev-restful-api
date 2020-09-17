@@ -3,6 +3,7 @@ const {
   GetAllCategory,
   GetDetailCategory,
   UpdateCategory,
+  DeleteCategory,
 } = require("../models/category");
 
 exports.CreateCategory = async (req, res) => {
@@ -125,6 +126,34 @@ exports.UpdateCategory = async (req, res) => {
         name: req.body.name,
       },
     });
+  } catch (error) {
+    console.log(error);
+    res.status(202).send({
+      error: {
+        msg: error.message || "Something wrong",
+      },
+    });
+  }
+};
+
+exports.DeleteCategory = async (req, res) => {
+  try {
+    const result = await DeleteCategory(req.params.id);
+    console.log(result);
+    if (result[1].affectedRows) {
+      res.status(200).send({
+        data: {
+          id: parseInt(req.params.id),
+          msg: `Success to delete category with id ${req.params.id}`,
+        },
+      });
+    } else {
+      res.status(202).send({
+        data: {
+          msg: `category with id ${req.params.id} Not Exists`,
+        },
+      });
+    }
   } catch (error) {
     console.log(error);
     res.status(202).send({
