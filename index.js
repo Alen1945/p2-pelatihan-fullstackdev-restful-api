@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
@@ -17,6 +18,13 @@ const CategoryRouter = require("./src/routes/category");
 const AuthRouter = require("./src/routes/auth");
 const UserProfile = require("./src/routes/user");
 //Routing
+
+app.get("/", (req, res) => {
+  res.status(200).send({
+    msg: "API WORK",
+  });
+});
+
 app.use("/article", ArtilceRouter);
 app.use("/category", CategoryRouter);
 app.use("/auth", AuthRouter);
@@ -36,7 +44,8 @@ app.use((err, req, res) => {
     },
   });
 });
-const PORT = 5000;
+const PORT = process.env.PORT;
+
 app.listen(PORT, () => {
   console.log(`Server Running On Port ${PORT}`);
 });
