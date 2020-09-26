@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS articles(
 
 const articleRelation = `
 ALTER TABLE articles
-    DROP CONSTRAINT KEY IF EXISTS fk_category;
+    DROP CONSTRAINT IF EXISTS fk_category;
 ALTER TABLE articles
     ADD CONSTRAINT fk_category
     FOREIGN KEY (id_category) REFERENCES category(id)
