@@ -1,21 +1,23 @@
+require("dotenv").config();
+
 const { dbConnection } = require("../config/db");
 const { tables, relation } = require("./listMigration");
 
 dbConnection.query(
   `
-CREATE DATABASE IF NOT EXISTS latihan_livecoding;
-use latihan_livecoding;
+CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME};
+use ${process.env.DB_NAME};
 ${tables.join(";")};
 `,
   (err, result) => {
     if (!err) {
       console.log(`
-      use latihan_livecoding;
+      use ${process.env.DB_NAME};
       ${relation.join(";")}`);
 
       dbConnection.query(
         `
-      use latihan_livecoding;
+      use ${process.env.DB_NAME};
       ${relation.join(";")}`,
         (err, result) => {
           if (!err) {
