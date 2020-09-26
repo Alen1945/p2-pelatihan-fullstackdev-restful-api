@@ -11,6 +11,8 @@ CREATE TABLE IF NOT EXISTS articles(
 
 const articleRelation = `
 ALTER TABLE articles
+    DROP CONSTRAINT fk_category;
+ALTER TABLE articles
     ADD CONSTRAINT fk_category
     FOREIGN KEY (id_category) REFERENCES category(id)
     ON DELETE SET NULL
