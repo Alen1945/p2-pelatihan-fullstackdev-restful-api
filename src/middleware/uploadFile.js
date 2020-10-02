@@ -8,9 +8,10 @@ const storage = multer.diskStorage({
     cb(null, new Date().getTime() + "." + file.mimetype.split("/")[1]);
   },
 });
+const memoryStorage = multer.memoryStorage();
 
 const upload = multer({
-  storage: storage,
+  storage: memoryStorage,
   limits: {
     fileSize: 1024 * 1024 * 2,
   },

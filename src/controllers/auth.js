@@ -39,6 +39,7 @@ exports.Login = async (req, res) => {
           {
             id: dataUser.id,
             username: dataUser.username,
+            role: "admin",
           },
           "1234567989",
           {

@@ -10,6 +10,7 @@ async function Authentication(req, res, next) {
     const payload = jwt.verify(token, "1234567989");
     console.log(payload);
     req.auth = payload;
+
     next();
   } catch (err) {
     console.log(err);
